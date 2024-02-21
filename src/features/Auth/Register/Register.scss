@@ -1,0 +1,80 @@
+@import '../../../assets/styles/global';
+.register {
+  max-width: 463px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 20px;
+
+  .heading {
+    @include customTextStyle(2rem, 600, 30px, #171725);
+    text-align: center;
+  }
+  .desc {
+    text-align: center;
+    @include customTextStyle(1rem, 400, 22px, #808191);
+    &-link {
+      @include customTextStyle(inherit, 500, 22px, #1dc071);
+      text-decoration: underline;
+    }
+  }
+  &-form {
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+}
+.register-btn {
+  margin-top: 30px;
+  border-radius: 10px;
+
+  background-color: rgba(29, 192, 113, 1);
+  &:hover {
+    background-color: rgba(74, 205, 141, 1);
+    transition: 0.5s all ease;
+  }
+  .ant-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    color: #fff !important;
+    font-family: Epilogue;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    transition: 0.5s;
+    line-height: 26px;
+    gap: 0 18px;
+    &-default {
+      background-color: rgba(29, 192, 113, 1) !important;
+      border: none;
+      box-shadow: none !important;
+      &:hover {
+        background-color: rgba(74, 205, 141, 1) !important;
+      }
+    }
+  }
+}
+
+.register-group {
+  margin-bottom: 15px;
+  label {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+  }
+
+  .register-input {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+    padding: 15px 25px;
+    width: 88%;
+    border-radius: 10px;
+    border: 1px solid #f1f1f3;
+    outline: none;
+  }
+}

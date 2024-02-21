@@ -1,0 +1,28 @@
+@import '../../assets/styles/global';
+
+.mainLayout {
+  min-height: 100vh;
+  background-color: $bg-auth;
+  padding: 4rem;
+  position: relative;
+  isolation: isolate;
+  .img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+  @media only screen and (max-width: 320px) {
+    .mainLayout {
+      padding: 2rem;
+    }
+  }
+}
+.mainBody {
+  display: flex;
+  .mainContent {
+    width: 100%;
+  }
+}

@@ -1,0 +1,34 @@
+@import '../../assets/styles/global';
+
+.authLayout {
+
+  background-image: url('../../assets/images/auth-bg.256b7710.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-color: #0b454f;
+  overflow-y: auto;
+  height: 945px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.authBody {
+  width: 100%;
+  max-width: 556px;
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 5rem 6rem;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 375px) {
+  .authBody {
+    padding: 0;
+  }
+}
+
+
+
+
