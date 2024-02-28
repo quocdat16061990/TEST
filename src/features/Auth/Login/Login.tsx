@@ -1,215 +1,130 @@
-import * as React from 'react'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
+import { useState } from 'react'
+import { UserLogin } from 'src/core/models/user.type'
+import MuiButton from 'src/shared/components/Button/Button'
 import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
-import Link from '@mui/material/Link'
+import { Link } from 'react-router-dom'
 import './Login.scss'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
+import CustomTypography from 'src/shared/components/Typography/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { toast } from 'react-toastify'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { useAppDispatch } from 'src/store'
+import { useAppDispatch } from 'src/core/redux/store'
 import { useNavigate } from 'react-router-dom'
-import { loginAccount, registerAccount } from '../authSlice'
+import { loginAccount } from '../authSlice'
 import { unwrapResult } from '@reduxjs/toolkit'
-import message from 'src/constants/message'
-import path from 'src/constants/path'
-import User from 'src/types/user.type'
-import GoogleIcon from 'src/assets/logo.svg'
+import message from 'src/shared/constants/message'
+import path from 'src/shared/constants/path'
 import Logo from 'src/assets/images/Logo.png'
-interface IFormInput {
-  username: string
-  password: string
-}
-
+import { validateRules } from 'src/shared/utils/fucntion'
+import MaterialUIInput from 'src/shared/components/Input/Input'
+import { Paper } from '@mui/material'
 export default function SignIn() {
-  const defaultTheme = createTheme()
-
-  const dispatch = useAppDispatch()
+  const [password, setPassword] = useState<Boolean>(false)
   const navigate = useNavigate()
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch
-  } = useForm<IFormInput>()
-
-  const password = watch('password')
-
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+  const { control, handleSubmit } = useForm<UserLogin>()
+  const onSubmit: SubmitHandler<UserLogin> = async (data) => {
     const body = {
       username: data.username,
       password: data.password
     }
-    console.log('body', body)
 
     try {
-      const res = (await dispatch(loginAccount(body))) as any
-      unwrapResult(res)
-      toast.success(message.LOGIN_SUCCESS)
-
-      navigate(path.home)
+      navigate(path.register)
     } catch (error: any) {
       toast.error(error.message)
     }
   }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component='main' maxWidth='xs'>
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: '#FFF',
-            borderRadius: '20px',
-            padding: '16px',
-            width: '520px'
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              marginBottom: '1em'
-            }}
-          >
-            <img src={Logo} style={{ width: '70%' }} alt='Logo' />
+    <Paper className='login'>
+      <Box className='login-heading'>
+        <div>
+          <img src={Logo} alt='Logo' />
+        </div>
 
-            <Typography component='p' variant='h5' sx={{ fontSize: '16px', color: '#EB5757', marginRight: '5px' }}>
-              Automate Construction Monitoring
-            </Typography>
-          </Box>
+        <CustomTypography component='p' variant='body1' className='intro'>
+          Automate Construction Monitoring
+        </CustomTypography>
+      </Box>
+      <CustomTypography component='p' variant='body1' className='signin'>
+        LOGIN
+      </CustomTypography>
+      <CustomTypography component='p' variant='body1' className='welcome'>
+        Welcome Back
+      </CustomTypography>
 
-          <Typography component='h1' variant='h5' sx={{ fontSize: '16px' }}>
-            LOGIN
-          </Typography>
-          <Typography component='h1' variant='h5' sx={{ fontSize: '20px', fontWeight: 'bold', color: '#EB5757' }}>
-            Welcome Back
-          </Typography>
-          <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
-            <Box
-              sx={{
-                padding: '30px'
-              }}
-            >
-              <TextField
-                margin='normal'
-                required
-                fullWidth
-                label='Email or UserName'
-                type='text'
-                style={{
-                  fontSize: '15px'
-                }}
-                {...register('username', { required: 'This field is required' })}
-              />
+      <form className='login-form' onSubmit={handleSubmit(onSubmit)}>
+        <MaterialUIInput
+          type='text'
+          name='username'
+          label='Email or Username'
+          control={control}
+          rules={validateRules.username}
+        />
+        <MaterialUIInput
+          className='password'
+          type={password ? 'text' : 'password'}
+          name='password'
+          label='Password'
+          control={control}
+          rules={validateRules.password}
+        />
 
-              <TextField
-                margin='normal'
-                required
-                fullWidth
-                label='Password'
-                type='password'
-                {...register('password', { required: 'This field is required' })}
-              />
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <FormControlLabel
-                  control={<Checkbox value='remember' color='primary' />}
-                  label='Show Password'
-                  style={{ fontSize: '14px' }}
-                />
+        <Box className='login-group'>
+          <FormControlLabel
+            control={<Checkbox value='remember' color='error' />}
+            label='Show Password'
+            className='showPassword'
+            onChange={() => setPassword(!password)}
+          />
 
-                <Link
-                  href='#'
-                  variant='body2'
-                  style={{ fontSize: '12px', textDecoration: 'none', color: '#EB5757', fontWeight: 'bold' }}
-                >
-                  Forgot password?
-                </Link>
-              </Box>
-
-              <Button
-                type='submit'
-                fullWidth
-                variant='contained'
-                sx={{
-                  marginTop: '20px',
-                  padding: '15px',
-                  fontSize: '14px',
-                  background: '#23B6D8',
-                  '&:hover': {
-                    background: '#23B6D8'
-                  }
-                }}
-              >
-                LOGIN
-              </Button>
-              <Typography component='h5' variant='h5' sx={{ textAlign: 'center', fontSize: '14px', margin: '10px 0' }}>
-                OR
-              </Typography>
-              <Button
-                type='submit'
-                fullWidth
-                variant='contained'
-                sx={{
-                  background: '#EB5757',
-                  '&:hover': {
-                    background: '#EB5757'
-                  },
-                  fontSize: '14px',
-                  padding: '10px'
-                }}
-              >
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 16 16'
-                  color='#ffffff'
-                  width={16}
-                  height={16}
-                  style={{ marginRight: 5 }}
-                >
-                  <g clipPath='url(#google_svg__a)'>
-                    <path
-                      fill='currentColor'
-                      d='M15.671 6.545H8.035v3.273h4.328C11.671 12 9.962 12.727 8 12.727a4.726 4.726 0 1 1 3.035-8.346l2.378-2.265A8 8 0 1 0 8 16c4.411 0 8.4-2.909 7.671-9.455Z'
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id='google_svg__a'>
-                      <path fill='currentColor' d='M0 0h16v16H0z' />
-                    </clipPath>
-                  </defs>
-                </svg>
-                <Typography
-                  component='h5'
-                  variant='h5'
-                  sx={{ textAlign: 'center', fontSize: '14px', margin: '10px 0' }}
-                >
-                  LOGIN WITGH GOOGLE
-                </Typography>
-              </Button>
-            </Box>
-          </form>
+          <Link to='/forgot-password' className='forgot-password'>
+            Forgot password?
+          </Link>
         </Box>
-      </Container>
-    </ThemeProvider>
+        <MuiButton type='submit' variant='contained' className='btn-login'>
+          LOGIN
+        </MuiButton>
+        <CustomTypography component='h5' variant='h5' text='OR' className='utils'>
+          OR
+        </CustomTypography>
+        <MuiButton type='button' variant='contained' className='btn-google'>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 16 16'
+            color='#ffffff'
+            width={16}
+            height={16}
+            style={{ margin: '5px' }}
+          >
+            <g clipPath='url(#google_svg__a)'>
+              <path
+                fill='currentColor'
+                d='M15.671 6.545H8.035v3.273h4.328C11.671 12 9.962 12.727 8 12.727a4.726 4.726 0 1 1 3.035-8.346l2.378-2.265A8 8 0 1 0 8 16c4.411 0 8.4-2.909 7.671-9.455Z'
+              />
+            </g>
+            <defs>
+              <clipPath id='google_svg__a'>
+                <path fill='currentColor' d='M0 0h16v16H0z' />
+              </clipPath>
+            </defs>
+          </svg>
+          LOGIN WITH GOOGLE
+        </MuiButton>
+        <CustomTypography component='h5' variant='h5' className='text' text='Not on Via Yet' />
+        <CustomTypography component='h5' variant='h5' className='registers1'>
+          Not on Via yet?
+          <Link to={path.register} className='sing-up'>
+            Sign Up
+          </Link>
+          Now
+        </CustomTypography>
+      </form>
+    </Paper>
   )
 }

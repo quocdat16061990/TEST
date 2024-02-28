@@ -1,172 +1,171 @@
-import * as React from 'react'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
+import MuiButton from 'src/shared/components/Button/Button'
 import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
-import Link from '@mui/material/Link'
-import Grid from '@mui/material/Grid'
+import { Link } from 'react-router-dom'
+import './Register.scss'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
+import CustomTypography from 'src/shared/components/Typography/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { toast } from 'react-toastify'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { useAppDispatch } from 'src/store'
+import { useAppDispatch } from 'src/core/redux/store'
 import { useNavigate } from 'react-router-dom'
 import { registerAccount } from '../authSlice'
-import { unwrapResult } from '@reduxjs/toolkit'
-import message from 'src/constants/message'
-import path from 'src/constants/path'
-import User from 'src/types/user.type'
-import Logo from 'src/assets/logo.svg'
-interface IFormInput {
-  username: string
-  firstName: string
-  lastName: string
-  password: string
-  confirm_password?: string
-  email: string
-  phone: string
-}
-
-export default function SignIn() {
+import message from 'src/shared/constants/message'
+import path from 'src/shared/constants/path'
+import Logo from 'src/assets/images/Logo.png'
+import { useState } from 'react'
+import { UserRegister } from 'src/core/models/user.type'
+import SelectCountry from 'src/shared/components/SelectCountry'
+import MaterialUIInput from 'src/shared/components/Input/Input'
+import { Paper } from '@mui/material'
+import { validateRules } from 'src/shared/utils/fucntion'
+export default function Register() {
+  const [password, setPassword] = useState<Boolean>(false)
   const defaultTheme = createTheme()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch
-  } = useForm<IFormInput>()
+  const { control, handleSubmit, formState } = useForm<UserRegister>({})
 
-  const password = watch('password')
-
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+  const onSubmit: SubmitHandler<UserRegister> = async (data) => {
     const body = {
       username: data.username,
       password: data.password,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
-      phone: data.phone
+      phone: data.phone,
+      confirm_password: data.confirm_password
     }
-    console.log('body', body)
 
     try {
-      const res = (await dispatch(registerAccount(body))) as any
-      unwrapResult(res)
+      const res = await dispatch(registerAccount(body))
       toast.success(message.LOGIN_SUCCESS)
-
-      navigate(path.home)
+      navigate(path.login)
     } catch (error: any) {
       toast.error(error.message)
     }
   }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component='main' maxWidth='xs'>
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <Typography component='h1' variant='h5'>
-            Login
-          </Typography>
-          <Typography component='h1' variant='h5'>
-            Welcome Back
-          </Typography>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              id='firstName'
-              label='First Name'
-              {...register('firstName', { required: 'This field is required' })}
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              label='Last Name'
-              type='text'
-              {...register('lastName', { required: 'This field is required' })}
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              label='User Name'
-              type='text'
-              {...register('username', { required: 'This field is required' })}
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              label='Email'
-              type='text'
-              {...register('email', { required: 'This field is required' })}
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              label='Phone'
-              type='text'
-              {...register('phone', { required: 'This field is required' })}
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              label='Password'
-              type='password'
-              {...register('password', { required: 'This field is required' })}
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              label='Confirm Password'
-              type='password'
-              {...register('confirm_password', {
-                required: 'This field is required',
-                validate: (value) => value === password || 'Passwords do not match'
-              })}
-            />
-            <Grid container display='flex' justifyContent='space-between' sx={{ mt: 1, mb: 2 }}>
-              <Grid item>
-                <FormControlLabel control={<Checkbox value='remember' color='primary' />} label='Show Password' />
-              </Grid>
-              <Grid item xs>
-                <Link href='#' variant='body2'>
-                  Forgot password?
-                </Link>
-              </Grid>
-            </Grid>
-            <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-              SIGN UP
-            </Button>
-            <Typography component='h5' variant='h5'>
-              OR
-            </Typography>
-            <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-              <img src={Logo} alt='' />
-            </Button>
-          </form>
+    <Paper className='register'>
+      <Box className='register-intro'>
+        <Box className='register-title'>
+          <div>
+            <img src={Logo} alt='Logo' />
+          </div>
+
+          <CustomTypography component='p' variant='body1' className='intro'>
+            Automate Construction Monitoring
+          </CustomTypography>
         </Box>
-      </Container>
-    </ThemeProvider>
+
+        <CustomTypography component='p' variant='body1' className='signin'>
+          CREATE NEW ACCOUNT
+        </CustomTypography>
+        <CustomTypography component='p' variant='body1' className='welcome'>
+          Build Smart Risk Free
+        </CustomTypography>
+        <Box className='register-desc'>
+          <CustomTypography component='p' variant='body1' className='desc'>
+            Understand why Viact is being used on millions of customers everyday
+          </CustomTypography>
+          <CustomTypography component='p' variant='body1' className='desc'>
+            Find out if Viact is the right fit for your business
+          </CustomTypography>
+          <CustomTypography component='p' variant='body1' className='desc'>
+            Get all your questions answered (personally)
+          </CustomTypography>
+          <CustomTypography component='p' variant='body1' className='desc'>
+            Completely risk-free with 14-day free trial and a 30-day money back guarantee!
+          </CustomTypography>
+        </Box>
+      </Box>
+
+      <form className='register-form' onSubmit={handleSubmit(onSubmit)}>
+        <MaterialUIInput
+          name='firstName'
+          control={control}
+          type='text'
+          label='FirstName'
+          rules={validateRules.firstName}
+          showText
+          className='field'
+        />
+        <MaterialUIInput
+          name='lastName'
+          control={control}
+          type='text'
+          label='Last Name'
+          rules={validateRules.lastName}
+          showText
+          className='field'
+        />
+        <MaterialUIInput
+          name='username'
+          control={control}
+          type='text'
+          label='Username '
+          rules={validateRules.username}
+          showText
+          className='field'
+        />
+        <MaterialUIInput
+          name='email'
+          control={control}
+          type='text'
+          label='Email '
+          rules={validateRules.email}
+          showText
+          className='field'
+        />
+        <SelectCountry label='Phone' name='phone' control={control} rules={validateRules.phone} />
+        <MaterialUIInput
+          name='password'
+          control={control}
+          type={password ? 'text' : 'password'}
+          className='field'
+          label='Password'
+          rules={validateRules.password}
+          showText
+        />
+        <MaterialUIInput
+          name='confirmPassword'
+          control={control}
+          type={password ? 'text' : 'password'}
+          className='field'
+          label='Confirm Password'
+          rules={validateRules.confirmPassword}
+          showText
+        />
+
+        <Box>
+          <FormControlLabel
+            control={<Checkbox value='remember' color='error' />}
+            label='Show Password'
+            className='showPassword'
+            onChange={() => setPassword(!password)}
+          />
+        </Box>
+        <MuiButton type='submit' variant='contained' disabled={!formState.isValid}>
+          SIGN UP
+        </MuiButton>
+        <Box className = 'register-text'>
+          <CustomTypography component='h5' variant='h5' className='registers'>
+            By clicking Sign up or Continue with Google, you agree to viAct’s
+            <span className='sing-up'>Terms and Conditions for Free Trial.</span>
+          </CustomTypography>
+
+          <CustomTypography component='h5' variant='h5' className='registers'>
+            Already have an account?
+            <Link to={path.login} className='sing-up'>
+              Login
+            </Link>
+          </CustomTypography>
+        </Box>
+      </form>
+    </Paper>
   )
 }

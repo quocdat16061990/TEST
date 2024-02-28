@@ -1,0 +1,32 @@
+@import '../../../assets//styles/global';
+.form-group {
+  margin-bottom: 20px;
+  .muiInput {
+    width: 100%;
+    .MuiInputLabel-outlined {
+      color: $primary;
+      font-size: 14px;
+    }
+
+    .Mui-focused fieldset {
+      border-color: $secondary;
+      font-size: 14px;
+    }
+    .MuiFormLabel-root.Mui-focused {
+      color: $secondary;
+    }
+    .MuiInputBase-input {
+      padding: 18.5px 14px;
+      font-size: 14px;
+    }
+    .start {
+      color: $start;
+    }
+  }
+}
+
+
+
+.errors .MuiOutlinedInput-notchedOutline {
+  border-color: $secondary;
+}

@@ -1,8 +1,7 @@
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import { RootState } from './store'
+import { RootState } from './core/redux/store'
 import AuthLayout from 'src/layout/AuthLayout'
-import path from 'src/constants/path'
-import MainLayout from 'src/layout/MainLayout/MainLayout'
+import path from 'src/shared/constants/path'
 import { useSelector } from 'react-redux'
 import { Suspense, lazy } from 'react'
 
@@ -12,38 +11,12 @@ const Home = lazy(() => import('src/features/Home'))
 
 export default function useRoutesElements() {
   const isAuthenticatedLS = useSelector((state: RootState) => state?.authReducer?.isAuthenticatedLS)
-  const isAuthenticatedSS = useSelector((state: RootState) => state?.authReducer?.isAuthenticatedSS)
-  const total = isAuthenticatedLS || isAuthenticatedSS
-
-  function ProtectedRoute() {
-    return total ? <Outlet /> : <Navigate to='/login' />
-  }
 
   function RejectedRoute() {
-    return !total ? <Outlet /> : <Navigate to='/' />
+    return !isAuthenticatedLS ? <Outlet /> : <Navigate to={path.login} />
   }
 
   const routeElement = useRoutes([
-    {
-      path: '',
-      element: <ProtectedRoute />,
-      children: [
-        {
-          path: '',
-          element: <MainLayout />,
-          children: [
-            {
-              path: path.home,
-              element: (
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Home />
-                </Suspense>
-              )
-            }
-          ]
-        }
-      ]
-    },
     {
       path: '',
       element: <RejectedRoute />,

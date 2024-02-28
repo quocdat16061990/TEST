@@ -1,80 +1,114 @@
-@import '../../../assets/styles/global';
+@import '../../../assets//styles/global';
 .register {
-  max-width: 463px;
-  width: 100%;
-  margin: 0 auto;
-  background-color: #fff;
+  margin-top: 8px;
+  display: flex;
   padding: 30px;
-  border-radius: 20px;
+  margin: 30px;
+  justify-content: center;
+  max-width: 1000px;
+  background: $bg-primary;
+  border-radius: 20px !important;
 
-  .heading {
-    @include customTextStyle(2rem, 600, 30px, #171725);
-    text-align: center;
-  }
-  .desc {
-    text-align: center;
-    @include customTextStyle(1rem, 400, 22px, #808191);
-    &-link {
-      @include customTextStyle(inherit, 500, 22px, #1dc071);
-      text-decoration: underline;
+  &-intro {
+    width: 50%;
+    border-right: 1px solid $border-right;
+    .register-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-bottom: 10px;
+      img {
+        width: 280px;
+        max-width: 100%;
+        height: auto;
+      }
     }
-  }
-  &-form {
-    margin-top: 30px;
-    margin-bottom: 10px;
-  }
-}
-.register-btn {
-  margin-top: 30px;
-  border-radius: 10px;
 
-  background-color: rgba(29, 192, 113, 1);
-  &:hover {
-    background-color: rgba(74, 205, 141, 1);
-    transition: 0.5s all ease;
-  }
-  .ant-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 24px;
-    color: #fff !important;
-    font-family: Epilogue;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    transition: 0.5s;
-    line-height: 26px;
-    gap: 0 18px;
-    &-default {
-      background-color: rgba(29, 192, 113, 1) !important;
-      border: none;
-      box-shadow: none !important;
-      &:hover {
-        background-color: rgba(74, 205, 141, 1) !important;
+    .sing-up {
+      font-size: 16px;
+      color: $bg-primary;
+      margin-right: 5px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+    .forgot-password {
+      font-size: 12px;
+      font-weight: bold;
+      color: $secondary;
+    }
+    .register-desc {
+      padding: 20px;
+      .desc {
+        font-size: 16px;
+        color: $desc;
+        margin-bottom: 30px;
+      }
+      .desc:last-child {
+        margin-bottom: 0;
       }
     }
   }
-}
+  &-form {
+    width: 50%;
+    padding: 30px;
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .showPassword {
+      margin-top: -20px;
+      .MuiFormControlLabel-label {
+        font-size: 15px;
+      }
+    }
 
-.register-group {
-  margin-bottom: 15px;
-  label {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 22px;
+    .sing-up {
+      font-size: 12px;
+      color: $secondary;
+      text-align: center;
+    }
+  }
+  &-text {
+    text-align: center;
+    width: 100%;
+    padding: 0 50px;
+    .register.MuiTypography-h5 {
+      width: 100%;
+      max-width: 330px;
+      text-align: center;
+      display: block;
+      line-height: 1.5;
+    }
+    .registers.MuiTypography-h5 {
+      text-align: center;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    &-intro {
+      width: 100%;
+      border-right: none;
+    }
+    &-form {
+      width: 100%;
+    }
+  }
+  @media screen and (max-width: 425px) {
+    flex-wrap: wrap;
+
+    padding: 30px;
+    &-intro {
+      width: 100%;
+      border-right: none;
+      .register-title {
+        padding: 0 20px;
+        img {
+          max-width: 150px;
+        }
+      }
+    }
   }
 
-  .register-input {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 22px;
-    padding: 15px 25px;
-    width: 88%;
-    border-radius: 10px;
-    border: 1px solid #f1f1f3;
-    outline: none;
+  .modal-text.MuiTypography-body1 {
+    font-size: 15px;
   }
 }

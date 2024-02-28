@@ -1,18 +1,18 @@
-import { Link, Outlet } from 'react-router-dom'
+import { Paper, ThemeProvider, createTheme, Container, CssBaseline } from '@mui/material'
+import { Props } from './Auth.type'
+import { Outlet } from 'react-router-dom'
 import './AuthLayout.scss'
 
-interface Props {
-  children?: React.ReactNode
-  heading?: string
-}
 export default function AuthLayout({ children }: Props) {
+  const defaultTheme = createTheme()
+  
   return (
-    <div className='authLayout'>
-      <Link to='/'>
-      </Link>
-     {children}
-      <Outlet/>
-    </div>
+    <ThemeProvider theme={defaultTheme}>
+      <Container className='authLayout' maxWidth = {false}>
+        <CssBaseline />
+        {children}
+        <Outlet />
+      </Container>
+    </ThemeProvider>
   )
 }
-

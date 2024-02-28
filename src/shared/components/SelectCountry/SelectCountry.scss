@@ -1,0 +1,39 @@
+@import '../../../assets//styles/global';
+
+.tel-input {
+  .react-tel-input {
+    border: 1px solid $border-color-2;
+    border-radius: 4px;
+    margin-bottom: 13px;
+    &:hover {
+      border: 1px solid $border-color;
+    }
+    &:focus-within {
+      border: 2px solid $secondary;
+      .special-label {
+        color: $secondary;
+      }
+    }
+    .special-label {
+      display: inline;
+      font-size: 12px;
+      top: -10px;
+      left: 2%;
+      color: $text-2;
+    }
+    .form-control {
+      padding: 27px;
+      border: none;
+      width: 94%;
+      padding: 27px;
+      left: 6%;
+      border-left: none;
+    }
+    .flag-dropdown {
+      background-color: $bg-primary;
+      border: none;
+      .selected-flag {
+      }
+    }
+  }
+}

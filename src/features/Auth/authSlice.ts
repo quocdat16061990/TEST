@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice, AsyncThunk } from '@reduxjs/toolkit'
-import User from 'src/types/user.type'
-import http from 'src/utils/http'
-import { payloadCreator } from 'src/utils/helper'
+import User from 'src/shared/types/user.type'
+import http from 'src/shared/utils/http'
+import { URL_LOGIN, URL_REGISTER } from 'src/core/services/auth.api'
 interface UserState {
+  isAuthenticatedLS?: any
   data: any
-  isAuthenticatedLS: boolean
-  isAuthenticatedSS: boolean
   loading: boolean
   error: string | null
   username: string | null
@@ -18,8 +17,6 @@ interface UserLogin {
 const initialState: UserState = {
   data: localStorage.getItem('accessToken') || '',
   loading: false,
-  isAuthenticatedLS: localStorage.getItem('isAuthenticatedLS') === 'true',
-  isAuthenticatedSS: sessionStorage.getItem('isAuthenticatedSS') === 'true',
   error: null,
   username: null
 }
@@ -27,7 +24,7 @@ type RegisterAccountThunk = AsyncThunk<User, User, {}>
 
 export const registerAccount: RegisterAccountThunk = createAsyncThunk('auth/register', async (data: User, thunkAPI) => {
   try {
-    const response = await http.post<User>('api/user/register', data, {
+    const response = await http.post<User>(`${URL_REGISTER}`, data, {
       signal: thunkAPI.signal
     })
     return response.data
@@ -35,7 +32,7 @@ export const registerAccount: RegisterAccountThunk = createAsyncThunk('auth/regi
     return thunkAPI.rejectWithValue(error)
   }
 })
-export const loginAccount = createAsyncThunk('auth/login', async (data: UserLogin, thunkAPI) => {
+export const loginAccount = createAsyncThunk(`${URL_LOGIN}`, async (data: UserLogin, thunkAPI) => {
   try {
     const response = await http.post<UserLogin>('auth/users', data, {
       signal: thunkAPI.signal
@@ -50,23 +47,13 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setIsAuthenticateChecked: (state, action) => {
-      state.isAuthenticatedLS = action.payload
-      localStorage.setItem('isAuthenticatedLS', action.payload ? 'true' : 'false')
-    },
-    setIsAuthenticateUnChecked: (state, action) => {
-      state.isAuthenticatedSS = action.payload
-      sessionStorage.setItem('isAuthenticatedSS', action.payload ? 'true' : 'false')
-    },
+   
     logout: (state, action) => {
-      state.isAuthenticatedLS = false
-      state.isAuthenticatedSS = false
       state.data = ''
       localStorage.removeItem('accessToken')
     },
     clearTokenOnExpiration: (state) => {
-      state.isAuthenticatedLS = false
-      state.data = '' // Clear token
+      state.data = '' 
       localStorage.removeItem('accessToken')
     }
   },
@@ -93,7 +80,6 @@ const userSlice = createSlice({
         state.loading = false
         state.data = action.payload.accessToken
         state.username = action.meta.arg.username
-        state.isAuthenticatedLS = true
         localStorage.setItem('accessToken', action.payload.accessToken || '')
       })
       .addCase(loginAccount.rejected, (state, action) => {
@@ -102,6 +88,6 @@ const userSlice = createSlice({
       })
   }
 })
-export const { setIsAuthenticateChecked, setIsAuthenticateUnChecked, logout } = userSlice.actions
+export const { logout } = userSlice.actions
 const authReducer = userSlice.reducer
 export default authReducer

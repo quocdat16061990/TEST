@@ -1,0 +1,59 @@
+@import '../../../assets//styles/global';
+
+.intro.MuiTypography-body1 {
+  font-size: 16px;
+  color: $secondary;
+  margin-right: 5px;
+  max-width: 91px;
+}
+.signin.MuiTypography-body1 {
+  font-size: 16px;
+  color: $text;
+  width: 100%;
+  text-align: center;
+}
+.error-validate.MuiTypography-body1 {
+  font-size: 14px;
+  color: $secondary;
+}
+.welcome.MuiTypography-body1 {
+  color: #eb5757;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+}
+.registers1.MuiTypography-h5 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $text;
+  font-size: 13px;
+
+  margin-top: 8px;
+}
+.registers.MuiTypography-h5 {
+  color: $text;
+  font-size: 12px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.sing-up {
+  font-size: 16px;
+  color: $secondary;
+  font-weight: bold;
+  margin-right: 5px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+.forgot-password {
+  font-size: 12px;
+  font-weight: bold;
+  color: $secondary;
+}
+.utils.MuiTypography-h5 {
+  font-size: 16px;
+  color: $text;
+  text-align: center;
+  margin-bottom: 12px;
+}
